@@ -1,23 +1,6 @@
 {
    "steps": [
       {
-         "name": "gcr.io/cloud-builders/docker",
-         "args": [
-            "build",
-            "-t",
-            "us-central1-docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage",
-            "."
-         ]
-      },
-      {
-         "name": "gcr.io/cloud-builders/docker",
-         "args": [
-            "push",
-            "-image",
-            "us-central1-docker.pkg.dev/${PROJECT_ID}/my-docker-repo/myimage"
-         ]
-      },
-      {
          "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
          "entrypoint": "gcloud",
          "timeout": "240s",
@@ -33,7 +16,9 @@
             "CLOUDSDK_COMPUTE_REGION=us-central1",
             "CLOUDSDK_COMPUTE_ZONE=us-central1-a"
          ],
- "logging": CLOUD_LOGGING_ONLY,
+         "options": {
+          "logging": "CLOUD_LOGGING_ONLY"
+        }
       }
    ]
 }
