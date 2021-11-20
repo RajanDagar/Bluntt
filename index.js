@@ -30,6 +30,40 @@ app.get("/Router", async (req, res) => {
   }
 });
 
+app.get("/Create-transport", async (req, res) => {
+  try {
+    let { participantId, direction } = req.body;
+
+    let transport = await createWebRtcTransport({ participantId, direction });
+    roomState.transports[transport.id] = transport;
+
+    let { id, iceParameters, iceCandidates, dtlsParameters } = transport;
+    res.send({
+      transportOptions: { id, iceParameters, iceCandidates, dtlsParameters }
+    });
+  } catch (e) {
+    res.send({error: e});
+  }
+});
+
+async function createWebRtcTransport({ participantId, direction }) {
+  const {
+    listenIps,
+    initialAvailableOutgoingBitrate
+  } = config.mediasoup.webRtcTransport;
+
+  const transport = await router.createWebRtcTransport({
+    listenIps: listenIps,
+    enableUdp: true,
+    enableTcp: true,
+    preferUdp: true,
+    initialAvailableOutgoingBitrate: initialAvailableOutgoingBitrate,
+    appData: { participantId, clientDirection: direction }
+  });
+
+  return transport;
+}
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
