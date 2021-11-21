@@ -64,5 +64,5 @@ async function createWebRtcTransport({ participantId, direction }) {
 }
 
 app.listen(5000,'127.0.0.1', () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Example app listening`)
 })
